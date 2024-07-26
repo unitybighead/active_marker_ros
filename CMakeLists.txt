@@ -7,6 +7,8 @@ ament_auto_find_build_dependencies()
 ament_auto_add_library(${PROJECT_NAME} SHARED
  src/color_pub.cpp 
  include/active_marker/color_pub.hpp
+ src/color_sub.cpp
+ include/active_marker/color_sub.hpp
  )
 
 if(BUILD_TESTING)

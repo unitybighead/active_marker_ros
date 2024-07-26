@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/color_rgba.hpp"
 
-namespace active_marker {
+namespace color_sub {
 class ColorSubNode : public rclcpp::Node {
  public:
   ColorSubNode()
@@ -31,10 +31,6 @@ class ColorSubNode : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
 
   RGBA pink_, green_, blue_, yellow_;
-  pink_.a = 0;
-  green_.a = 0;
-  blue_.a = 0;
-  yellow_.a = 0;
 
   std::size_t no_recv_count_;
 
@@ -45,6 +41,6 @@ class ColorSubNode : public rclcpp::Node {
   void set_yellow(ColorMsg::SharedPtr color_msg);
   void update();
 };
-}  // namespace active_marker
+}  // namespace color_sub
 
 #endif  // COLOR_SUB_HPP_

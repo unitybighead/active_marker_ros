@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-namespace active_marker {
+namespace color_sub {
 
 void ColorSubNode::init() {
   const auto qos = rclcpp::QoS(1).best_effort();
@@ -28,6 +28,10 @@ void ColorSubNode::init() {
   timer_ = this->create_wall_timer(1000ms / update_hz_,
                                    std::bind(&ColorSubNode::update, this));
   no_recv_count_ = 0;
+  pink_.a = 0;
+  green_.a = 0;
+  blue_.a = 0;
+  yellow_.a = 0;
 }
 
 void ColorSubNode::set_pink(ColorMsg::SharedPtr color_msg) {
@@ -66,4 +70,4 @@ void ColorSubNode::update() {
   }
 }
 
-}  // namespace active_marker
+}  // namespace color_sub
