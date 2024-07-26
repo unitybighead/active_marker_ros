@@ -63,11 +63,18 @@ void ColorSubNode::set_yellow(ColorMsg::SharedPtr color_msg) {
 }
 
 void ColorSubNode::update() {
-  RCLCPP_INFO(this->get_logger(), "runnning");
   no_recv_count_++;
-  if (no_recv_count_ > update_hz_) {
+  if (no_recv_count_ > update_hz_ * 3) {
     RCLCPP_ERROR(this->get_logger(), "no receive");
+  } else {
+    RCLCPP_INFO(this->get_logger(), "runnning");
   }
+  RCLCPP_INFO(this->get_logger(), "Pink: %d %d %d", pink_.r, pink_.g, pink_.b);
+  RCLCPP_INFO(this->get_logger(), "Green: %d %d %d", green_.r, green_.g,
+              green_.b);
+  RCLCPP_INFO(this->get_logger(), "Blue: %d %d %d", blue_.r, blue_.g, blue_.b);
+  RCLCPP_INFO(this->get_logger(), "Yellow: %d %d %d", yellow_.r, yellow_.g,
+              yellow_.b);
 }
 
 }  // namespace color_sub
