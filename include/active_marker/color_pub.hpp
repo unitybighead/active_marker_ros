@@ -25,6 +25,7 @@ class ColorPubNode : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
 
   void init();
+  void update();
 };
 }  // namespace color_pub
 

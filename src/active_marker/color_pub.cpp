@@ -21,4 +21,5 @@ void ColorPubNode::init() {
                                    std::bind(&ColorPubNode::update, this));
 }
 
+void ColorPubNode::update() {}
 }  // namespace color_pub
