@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-namespace color_pub {
+namespace active_marker::color_pub {
 
 void ColorPubNode::init() {
   const auto qos = rclcpp::QoS(1).best_effort();
@@ -22,4 +22,4 @@ void ColorPubNode::init() {
 }
 
 void ColorPubNode::update() {}
-}  // namespace color_pub
+}  // namespace active_marker::color_pub

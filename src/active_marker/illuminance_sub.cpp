@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-namespace illuminance_sub {
+namespace active_marker::illuminance_sub {
 void IlluminanceSubNode::init() {
   const auto qos = rclcpp::QoS(1).best_effort();
   illuminance_subscription_ = this->create_subscription<IlluminanceMsg>(
@@ -31,4 +31,4 @@ void IlluminanceSubNode::update() {
   RCLCPP_INFO(this->get_logger(), "%f", illuminance_);
 }
 
-}  // namespace illuminance_sub
+}  // namespace active_marker::illuminance_sub

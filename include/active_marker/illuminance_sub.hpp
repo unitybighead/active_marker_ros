@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
 
-namespace illuminance_sub {
+namespace active_marker::illuminance_sub {
 class IlluminanceSubNode : public rclcpp::Node {
  public:
   IlluminanceSubNode()
@@ -27,6 +27,6 @@ class IlluminanceSubNode : public rclcpp::Node {
   void set_illuminance(IlluminanceMsg::SharedPtr illuminance_msg);
   void update();
 };
-}  // namespace illuminance_sub
+}  // namespace active_marker::illuminance_sub
 
 #endif

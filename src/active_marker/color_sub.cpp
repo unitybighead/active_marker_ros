@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-namespace color_sub {
+namespace active_marker::color_sub {
 
 void ColorSubNode::init() {
   const auto qos = rclcpp::QoS(1).best_effort();
@@ -77,4 +77,4 @@ void ColorSubNode::update() {
               yellow_.b);
 }
 
-}  // namespace color_sub
+}  // namespace active_marker::color_sub

@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
 
-namespace illuminance_pub {
+namespace active_marker::illuminance_pub {
 class IlluminancePubNode : public rclcpp::Node {
  public:
   IlluminancePubNode()
@@ -23,6 +23,6 @@ class IlluminancePubNode : public rclcpp::Node {
   void init();
   void update();
 };
-}  //  namespace illuminance_pub
+}  // namespace active_marker::illuminance_pub
 
 #endif  // ILLUMINANCE_PUB_HPP_

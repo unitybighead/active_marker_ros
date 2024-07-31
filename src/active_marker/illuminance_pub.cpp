@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-namespace illuminance_pub {
+namespace active_marker::illuminance_pub {
 
 void IlluminancePubNode::init() {
   const auto qos = rclcpp::QoS(1).best_effort();
@@ -20,4 +20,4 @@ void IlluminancePubNode::init() {
 }
 
 void IlluminancePubNode::update() {}
-}  // namespace illuminance_pub
+}  // namespace active_marker::illuminance_pub
