@@ -2,7 +2,7 @@
 #define ILLUMINANCE_SUB_HPP_
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/float32.hpp"
+#include "std_msgs/msg/u_int16.hpp"
 
 namespace active_marker::illuminance_sub {
 class IlluminanceSubNode : public rclcpp::Node {
@@ -14,13 +14,13 @@ class IlluminanceSubNode : public rclcpp::Node {
   }
 
  private:
-  using IlluminanceMsg = std_msgs::msg::Float32;
+  using IlluminanceMsg = std_msgs::msg::UInt16;
 
   const std::size_t update_hz_;
   rclcpp::Subscription<IlluminanceMsg>::SharedPtr illuminance_subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
 
-  float illuminance_;
+  uint16_t illuminance_;
   std::size_t no_recv_count_;
 
   void init();

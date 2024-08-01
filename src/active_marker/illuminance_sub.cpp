@@ -22,13 +22,13 @@ void IlluminanceSubNode::init() {
 
 void IlluminanceSubNode::set_illuminance(
     IlluminanceMsg::SharedPtr illuminance_msg) {
-  illuminance_ = (float)illuminance_msg->data;
+  illuminance_ = (uint16_t)illuminance_msg->data;
   no_recv_count_ = 0;
 }
 
 void IlluminanceSubNode::update() {
   no_recv_count_++;
-  RCLCPP_INFO(this->get_logger(), "%f", illuminance_);
+  RCLCPP_INFO(this->get_logger(), "%d", illuminance_);
 }
 
 }  // namespace active_marker::illuminance_sub

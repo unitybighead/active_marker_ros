@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+#include "../../active_marker_lib/include/udp.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 using namespace std::chrono_literals;
@@ -17,7 +18,17 @@ void IlluminancePubNode::init() {
       this->create_publisher<IlluminanceMsg>("illuminance", qos);
   timer_ = this->create_wall_timer(
       1000ms / update_hz_, std::bind(&IlluminancePubNode::update, this));
+  illuminance_ = 0;
 }
 
-void IlluminancePubNode::update() {}
+void IlluminancePubNode::pub_illuminance(uint16_t illuminance_value) {
+  auto msg = IlluminanceMsg();
+  msg.data = illuminance_value;
+  RCLCPP_INFO(this->get_logger(), "Publishing: %d", msg.data);
+  illuminance_publisher_->publish(msg);
+}
+
+void IlluminancePubNode::update() {
+  RCLCPP_INFO(this->get_logger(), "%d", illuminance_);
+}
 }  // namespace active_marker::illuminance_pub

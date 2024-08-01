@@ -1,64 +1,56 @@
 cmake_minimum_required(VERSION 3.8)
 project(active_marker)
 
-# Find ament_cmake first
-find_package(ament_cmake REQUIRED)
+# Find ament_cmake_auto first
+find_package(ament_cmake_auto REQUIRED)
 
 # Find ROS2 packages
-set(ros2_required_packages
-  rclcpp
-  std_msgs
-)
-foreach(ros2_required_package IN LISTS ros2_required_packages)
-  find_package(${ros2_required_package} REQUIRED)
-endforeach()
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
-# Set compile files
-file(GLOB_RECURSE src_files 
-  LIST_DIRECTORIES false 
-  "src/active_marker/*")
-file(GLOB app_files 
-  LIST_DIRECTORIES false
-  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/src
-  "src/*")
+# Use ament_cmake_auto to set up the package
+ament_auto_find_build_dependencies()
 
-# Set library
-add_library(active_marker
-  ${src_files}
-)
-target_include_directories(active_marker 
-  PRIVATE include
-  INTERFACE include
+# Add active_marker_lib
+ament_auto_add_library(active_marker_lib STATIC
+  active_marker_lib/src/udp.cpp
 )
 
-ament_target_dependencies(active_marker
-  rclcpp
-  std_msgs
+target_include_directories(active_marker_lib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/active_marker_lib/include>
+  $<INSTALL_INTERFACE:include>
 )
 
-# Initialize executors variable
-set(executors "")
-
-# Make executors
-foreach(app_file IN LISTS app_files)
-  string(FIND ${app_file} . index)
-  string(SUBSTRING ${app_file} 0 ${index} executor)
-  list(APPEND executors ${executor})
-  add_executable(${executor}
-    src/${app_file}
-  )
-  target_link_libraries(${executor} active_marker)
-endforeach()
-
-# Install executors
-install(TARGETS
-  ${executors}
-  DESTINATION lib/${PROJECT_NAME}
+# Add main library
+ament_auto_add_library(${PROJECT_NAME} SHARED
+  src/active_marker/color_pub.cpp
+  src/active_marker/color_sub.cpp
+  src/active_marker/illuminance_pub.cpp
+  src/active_marker/illuminance_sub.cpp
 )
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
-endif()
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
-ament_package()
+# Add executables
+ament_auto_add_executable(color_pub src/color_pub.cpp)
+ament_auto_add_executable(color_sub src/color_sub.cpp)
+ament_auto_add_executable(illuminance_pub src/illuminance_pub.cpp)
+ament_auto_add_executable(illuminance_sub src/illuminance_sub.cpp)
+
+# Link libraries
+target_link_libraries(color_pub ${PROJECT_NAME} active_marker_lib)
+target_link_libraries(color_sub ${PROJECT_NAME} active_marker_lib)
+target_link_libraries(illuminance_pub ${PROJECT_NAME} active_marker_lib)
+target_link_libraries(illuminance_sub ${PROJECT_NAME} active_marker_lib)
+
+# Install headers
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+# Install executables and libraries
+ament_auto_package()

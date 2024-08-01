@@ -1,26 +1,33 @@
 #ifndef ILLUMINANCE_PUB_HPP_
 #define ILLUMINANCE_PUB_HPP_
 
+#include "../active_marker_lib/include/udp.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/float32.hpp"
+#include "std_msgs/msg/u_int16.hpp"
 
 namespace active_marker::illuminance_pub {
 class IlluminancePubNode : public rclcpp::Node {
  public:
   IlluminancePubNode()
       : Node("illuminance_pub"),
-        update_hz_(this->declare_parameter<int>("update_hz", 60)) {
+        update_hz_(this->declare_parameter<int>("update_hz", 60)),
+        udp_receiver_(50008, std::bind(&IlluminancePubNode::pub_illuminance,
+                                       this, std::placeholders::_1)) {
     init();
   }
 
  private:
-  using IlluminanceMsg = std_msgs::msg::Float32;
+  using IlluminanceMsg = std_msgs::msg::UInt16;
 
   const std::size_t update_hz_;
   rclcpp::Publisher<IlluminanceMsg>::SharedPtr illuminance_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
+  uint16_t illuminance_;
+  active_marker::udp::UdpReceiver udp_receiver_;
+
   void init();
+  void pub_illuminance(uint16_t illuminance_value);
   void update();
 };
 }  // namespace active_marker::illuminance_pub
