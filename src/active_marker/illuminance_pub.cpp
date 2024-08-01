@@ -24,11 +24,10 @@ void IlluminancePubNode::init() {
 void IlluminancePubNode::pub_illuminance(uint16_t illuminance_value) {
   auto msg = IlluminanceMsg();
   msg.data = illuminance_value;
+  illuminance_ = illuminance_value;
   RCLCPP_INFO(this->get_logger(), "Publishing: %d", msg.data);
   illuminance_publisher_->publish(msg);
 }
 
-void IlluminancePubNode::update() {
-  RCLCPP_INFO(this->get_logger(), "%d", illuminance_);
-}
+void IlluminancePubNode::update() {}
 }  // namespace active_marker::illuminance_pub

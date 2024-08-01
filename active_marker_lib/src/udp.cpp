@@ -21,6 +21,7 @@ UdpReceiver::UdpReceiver(int port, std::function<void(uint16_t)> callback)
   if (bind(sockfd_, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
     throw std::runtime_error("Failed to bind socket");
   }
+  start();
 }
 
 UdpReceiver::~UdpReceiver() {
@@ -51,8 +52,8 @@ void UdpReceiver::udp_receive() {
     if (n > 0) {
       buffer[n] = '\0';
       try {
-        uint16_t illuminance_value = std::stof(buffer);
-        callback_(illuminance_value);
+        uint16_t value = std::stoi(buffer);
+        callback_(value);
       } catch (const std::exception &e) {
         std::cerr << "Failed to parse illuminance value: " << e.what()
                   << std::endl;
