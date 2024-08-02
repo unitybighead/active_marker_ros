@@ -11,7 +11,7 @@ class IlluminancePubNode : public rclcpp::Node {
   IlluminancePubNode()
       : Node("illuminance_pub"),
         update_hz_(this->declare_parameter<int>("update_hz", 60)),
-        udp_receiver_(50008, std::bind(&IlluminancePubNode::pub_illuminance,
+        udp_receiver_(50007, std::bind(&IlluminancePubNode::pub_illuminance,
                                        this, std::placeholders::_1)) {
     init();
   }

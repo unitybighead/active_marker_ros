@@ -52,7 +52,7 @@ void UdpReceiver::udp_receive() {
     if (n > 0) {
       buffer[n] = '\0';
       try {
-        uint16_t value = std::stoi(buffer);
+        uint16_t value = buffer[0] + (buffer[1] << 8);
         callback_(value);
       } catch (const std::exception &e) {
         std::cerr << "Failed to parse illuminance value: " << e.what()
