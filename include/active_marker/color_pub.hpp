@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/color_rgba.hpp"
 
-namespace active_marker::color_pub {
+namespace active_marker {
 
 class ColorPubNode : public rclcpp::Node {
  public:
@@ -27,6 +27,6 @@ class ColorPubNode : public rclcpp::Node {
   void init();
   void update();
 };
-}  // namespace active_marker::color_pub
+}  // namespace active_marker
 
 #endif  // COLOR_PUB_HPP_

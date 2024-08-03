@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iostream>
 
-namespace active_marker::udp {
+namespace lib {
 
 UdpReceiver::UdpReceiver(int port, std::function<void(uint16_t)> callback)
     : callback_(callback), is_runnning_(false) {
@@ -62,4 +62,4 @@ void UdpReceiver::udp_receive() {
   }
 }
 
-}  // namespace active_marker::udp
+}  // namespace lib

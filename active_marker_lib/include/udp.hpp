@@ -8,7 +8,7 @@
 #include <functional>
 #include <thread>
 
-namespace active_marker::udp {
+namespace lib {
 
 class UdpReceiver {
  public:
@@ -26,6 +26,6 @@ class UdpReceiver {
   std::function<void(uint16_t)> callback_;
 };
 
-}  // namespace active_marker::udp
+}  // namespace lib
 
 #endif  // UDP_HPP_

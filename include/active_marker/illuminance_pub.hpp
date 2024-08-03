@@ -5,7 +5,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/u_int16.hpp"
 
-namespace active_marker::illuminance_pub {
+namespace active_marker {
 class IlluminancePubNode : public rclcpp::Node {
  public:
   IlluminancePubNode()
@@ -24,12 +24,12 @@ class IlluminancePubNode : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
 
   uint16_t illuminance_;
-  active_marker::udp::UdpReceiver udp_receiver_;
+  lib::UdpReceiver udp_receiver_;
 
   void init();
   void pub_illuminance(uint16_t illuminance_value);
   void update();
 };
-}  // namespace active_marker::illuminance_pub
+}  // namespace active_marker
 
 #endif  // ILLUMINANCE_PUB_HPP_

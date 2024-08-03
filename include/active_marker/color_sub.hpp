@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/color_rgba.hpp"
 
-namespace active_marker::color_sub {
+namespace active_marker {
 class ColorSubNode : public rclcpp::Node {
  public:
   ColorSubNode()
@@ -41,6 +41,6 @@ class ColorSubNode : public rclcpp::Node {
   void set_yellow(ColorMsg::SharedPtr color_msg);
   void update();
 };
-}  // namespace active_marker::color_sub
+}  // namespace active_marker
 
 #endif  // COLOR_SUB_HPP_
