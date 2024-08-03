@@ -44,6 +44,6 @@ void Uart::receive(char* received_data) {
   }
 }
 
-bool Uart::is_open() { return is_open_; }
+bool Uart::is_open() { return (uart_filestream_ != -1); }
 
 }  // namespace lib

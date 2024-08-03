@@ -14,14 +14,12 @@ namespace lib {
 class Uart {
  public:
   Uart(const char* port, int baud_rate) {
-    is_open_ = false;
     port_ = port;
     baud_rate_ = baud_rate;
     uart_filestream_ = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
     if (uart_filestream_ == -1) {
       std::cerr << "Unable to open UART" << std::endl;
     }
-    is_open_ = true;
     setOption();
   }
   ~Uart() { close(uart_filestream_); }
