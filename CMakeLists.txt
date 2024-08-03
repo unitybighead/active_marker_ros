@@ -14,6 +14,7 @@ ament_auto_find_build_dependencies()
 # Add active_marker_lib
 ament_auto_add_library(active_marker_lib STATIC
   active_marker_lib/src/udp.cpp
+  active_marker_lib/src/uart.cpp
 )
 
 target_include_directories(active_marker_lib PUBLIC

@@ -41,6 +41,7 @@ void UdpReceiver::stop() {
   }
 }
 
+// TODO: 受信と変換の切り離し
 void UdpReceiver::udp_receive() {
   char buffer[1024];
   sockaddr_in cliaddr;
