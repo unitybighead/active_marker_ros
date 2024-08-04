@@ -11,7 +11,7 @@ class IlluminanceSubNode : public rclcpp::Node {
   IlluminanceSubNode()
       : Node("illuminance_sub"),
         update_hz_(this->declare_parameter<int>("update_hz", 60)),
-        uart_("/dev/ttyTHS1", B38400) {
+        uart_("/dev/ttyTHS2", B38400) {
     init();
   }
 
