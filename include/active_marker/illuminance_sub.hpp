@@ -1,6 +1,7 @@
 #ifndef ILLUMINANCE_SUB_HPP_
 #define ILLUMINANCE_SUB_HPP_
 
+#include "../../active_marker_lib/include/uart.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/u_int16.hpp"
 
@@ -9,7 +10,8 @@ class IlluminanceSubNode : public rclcpp::Node {
  public:
   IlluminanceSubNode()
       : Node("illuminance_sub"),
-        update_hz_(this->declare_parameter<int>("update_hz", 60)) {
+        update_hz_(this->declare_parameter<int>("update_hz", 60)),
+        uart_("/dev/ttyTHS1", B38400) {
     init();
   }
 
@@ -22,6 +24,7 @@ class IlluminanceSubNode : public rclcpp::Node {
 
   uint16_t illuminance_;
   std::size_t no_recv_count_;
+  lib::Uart uart_;
 
   void init();
   void set_illuminance(IlluminanceMsg::SharedPtr illuminance_msg);

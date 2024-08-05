@@ -24,10 +24,11 @@ class Uart {
   }
   ~Uart() { close(uart_filestream_); }
 
- private:
-  void setOption();
   void transmit(const char* data);
   void receive(char* received_data);
+
+ private:
+  void setOption();
   bool is_open();
 
   const char* port_;

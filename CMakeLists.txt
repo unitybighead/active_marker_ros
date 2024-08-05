@@ -22,6 +22,8 @@ target_include_directories(active_marker_lib PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+target_compile_options(active_marker_lib PRIVATE -fPIC)
+
 # Add main library
 ament_auto_add_library(${PROJECT_NAME} SHARED
   src/active_marker/color_pub.cpp
@@ -45,7 +47,7 @@ ament_auto_add_executable(illuminance_sub src/illuminance_sub.cpp)
 target_link_libraries(color_pub ${PROJECT_NAME})
 target_link_libraries(color_sub ${PROJECT_NAME})
 target_link_libraries(illuminance_pub ${PROJECT_NAME} active_marker_lib)
-target_link_libraries(illuminance_sub ${PROJECT_NAME})
+target_link_libraries(illuminance_sub ${PROJECT_NAME} active_marker_lib)
 
 # Install headers
 install(

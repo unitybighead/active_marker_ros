@@ -28,7 +28,8 @@ void IlluminanceSubNode::set_illuminance(
 
 void IlluminanceSubNode::update() {
   no_recv_count_++;
-  RCLCPP_INFO(this->get_logger(), "%d", illuminance_);
+  char buffer[256] = {0};
+  uart_.receive(buffer);
 }
 
 }  // namespace active_marker
