@@ -2,6 +2,7 @@
 #define UART_HPP_
 
 #include <fcntl.h>
+#include <malloc.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -24,8 +25,8 @@ class Uart {
   }
   ~Uart() { close(uart_filestream_); }
 
-  void transmit(const char* data);
-  void receive(char* received_data);
+  void transmit(const uint8_t* data, const int size);
+  void receive(uint8_t* received_data);
 
  private:
   void setOption();

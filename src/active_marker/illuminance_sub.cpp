@@ -28,8 +28,11 @@ void IlluminanceSubNode::set_illuminance(
 
 void IlluminanceSubNode::update() {
   no_recv_count_++;
-  char buffer[256] = {0};
-  uart_.receive(buffer);
+  static uint8_t data[4] = {3, 0, 100, 200};
+  uart_.transmit(data, sizeof(data));
+  data[1]++;
+  data[2]++;
+  data[3]++;
 }
 
 }  // namespace active_marker

@@ -19,16 +19,19 @@ void Uart::setOption() {
   tcsetattr(uart_filestream_, TCSANOW, &options);  // apply new settings
 }
 
-void Uart::transmit(const char* data) {
+void Uart::transmit(const uint8_t* data, const int size) {
   if (uart_filestream_ != -1) {
-    int count = write(uart_filestream_, data, strlen(data));
+    uint8_t* data_buf = (uint8_t*)calloc(size + 1, sizeof(uint8_t));
+    std::memcpy(data_buf, data, sizeof(uint8_t));
+    data_buf[size] = '\0';
+    int count = write(uart_filestream_, data, sizeof(data_buf));
     if (count < 0) {
       std::cerr << "UART TX Error" << std::endl;
     }
   }
 }
 
-void Uart::receive(char* received_data) {
+void Uart::receive(uint8_t* received_data) {
   if (uart_filestream_ != -1) {
     unsigned char rx_buffer[256];
     int rx_rength = read(uart_filestream_, (void*)rx_buffer, 255);
