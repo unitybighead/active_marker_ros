@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include "../../active_marker_lib/include/uart.hpp"
+#include "active_marker/uart_proto.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 using namespace std::chrono_literals;
@@ -34,24 +36,14 @@ void ColorSubNode::init() {
   yellow_.a = 0;
 }
 
-void ColorSubNode::set_pink(ColorMsg::SharedPtr color_msg) {
-  pink_.r = color_msg->r;
-  pink_.g = color_msg->g;
-  pink_.b = color_msg->b;
-  no_recv_count_ = 0;
-}
-
-void ColorSubNode::set_green(ColorMsg::SharedPtr color_msg) {
-  green_.r = color_msg->r;
-  green_.g = color_msg->g;
-  green_.b = color_msg->b;
-  no_recv_count_ = 0;
-}
-
 void ColorSubNode::set_blue(ColorMsg::SharedPtr color_msg) {
   blue_.r = color_msg->r;
   blue_.g = color_msg->g;
   blue_.b = color_msg->b;
+  uint8_t data[] = {
+      static_cast<uint8_t>(UartCommand::BLUE), static_cast<uint8_t>(blue_.r),
+      static_cast<uint8_t>(blue_.g), static_cast<uint8_t>(blue_.b)};
+  uart_.transmit(data, sizeof(data));
   no_recv_count_ = 0;
 }
 
@@ -59,16 +51,38 @@ void ColorSubNode::set_yellow(ColorMsg::SharedPtr color_msg) {
   yellow_.r = color_msg->r;
   yellow_.g = color_msg->g;
   yellow_.b = color_msg->b;
+  uint8_t data[] = {static_cast<uint8_t>(UartCommand::YELLLOW),
+                    static_cast<uint8_t>(yellow_.r),
+                    static_cast<uint8_t>(yellow_.g),
+                    static_cast<uint8_t>(yellow_.b)};
+  uart_.transmit(data, sizeof(data));
+  no_recv_count_ = 0;
+}
+
+void ColorSubNode::set_pink(ColorMsg::SharedPtr color_msg) {
+  pink_.r = color_msg->r;
+  pink_.g = color_msg->g;
+  pink_.b = color_msg->b;
+  uint8_t data[] = {
+      static_cast<uint8_t>(UartCommand::PINK), static_cast<uint8_t>(pink_.r),
+      static_cast<uint8_t>(pink_.g), static_cast<uint8_t>(pink_.b)};
+  uart_.transmit(data, sizeof(data));
+  no_recv_count_ = 0;
+}
+
+void ColorSubNode::set_green(ColorMsg::SharedPtr color_msg) {
+  green_.r = color_msg->r;
+  green_.g = color_msg->g;
+  green_.b = color_msg->b;
+  uint8_t data[] = {
+      static_cast<uint8_t>(UartCommand::GREEN), static_cast<uint8_t>(green_.r),
+      static_cast<uint8_t>(green_.g), static_cast<uint8_t>(green_.b)};
+  uart_.transmit(data, sizeof(data));
   no_recv_count_ = 0;
 }
 
 void ColorSubNode::update() {
   no_recv_count_++;
-  if (no_recv_count_ > update_hz_ * 3) {
-    RCLCPP_ERROR(this->get_logger(), "no receive");
-  } else {
-    RCLCPP_INFO(this->get_logger(), "runnning");
-  }
   RCLCPP_INFO(this->get_logger(), "Pink: %d %d %d", pink_.r, pink_.g, pink_.b);
   RCLCPP_INFO(this->get_logger(), "Green: %d %d %d", green_.r, green_.g,
               green_.b);

@@ -1,6 +1,7 @@
 #ifndef COLOR_SUB_HPP_
 #define COLOR_SUB_HPP_
 
+#include "../../active_marker_lib/include/uart.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/color_rgba.hpp"
 
@@ -9,7 +10,8 @@ class ColorSubNode : public rclcpp::Node {
  public:
   ColorSubNode()
       : Node("color_sub"),
-        update_hz_(this->declare_parameter<int>("update_hz", 60)) {
+        update_hz_(this->declare_parameter<int>("update_hz", 60)),
+        uart_("/dev/ttyTHS2", B38400) {
     init();
   }
 
@@ -29,6 +31,7 @@ class ColorSubNode : public rclcpp::Node {
   rclcpp::Subscription<ColorMsg>::SharedPtr b_subscription_;
   rclcpp::Subscription<ColorMsg>::SharedPtr y_subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
+  lib::Uart uart_;
 
   RGBA pink_, green_, blue_, yellow_;
 

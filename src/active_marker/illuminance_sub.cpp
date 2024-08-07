@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+#include "active_marker/uart_proto.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 using namespace std::chrono_literals;
@@ -23,16 +24,13 @@ void IlluminanceSubNode::init() {
 void IlluminanceSubNode::set_illuminance(
     IlluminanceMsg::SharedPtr illuminance_msg) {
   illuminance_ = (uint16_t)illuminance_msg->data;
+  uint8_t data[] = {static_cast<uint8_t>(UartCommand::ILLUMINANCE),
+                    static_cast<uint8_t>((illuminance_ >> 8) & 0xFF),
+                    static_cast<uint8_t>(illuminance_ & 0xFF)};
+  uart_.transmit(data, sizeof(data));
   no_recv_count_ = 0;
 }
 
-void IlluminanceSubNode::update() {
-  no_recv_count_++;
-  static uint8_t data[4] = {3, 0, 100, 200};
-  uart_.transmit(data, sizeof(data));
-  data[1]++;
-  data[2]++;
-  data[3]++;
-}
+void IlluminanceSubNode::update() { no_recv_count_++; }
 
 }  // namespace active_marker
