@@ -8,8 +8,9 @@
 namespace active_marker {
 class ColorSubNode : public rclcpp::Node {
  public:
-  ColorSubNode()
-      : Node("color_sub"),
+  template <class... Args>
+  ColorSubNode(Args... args)
+      : Node("color_sub", "/am", args...),
         update_hz_(this->declare_parameter<int>("update_hz", 500)),
         uart_("/dev/ttyTHS2", B38400) {
     init();

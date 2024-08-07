@@ -8,8 +8,9 @@
 namespace active_marker {
 class IlluminanceSubNode : public rclcpp::Node {
  public:
-  IlluminanceSubNode()
-      : Node("illuminance_sub"),
+  template <class... Args>
+  IlluminanceSubNode(Args... args)
+      : Node("illuminance_sub", "/am", args...),
         update_hz_(this->declare_parameter<int>("update_hz", 60)),
         uart_("/dev/ttyTHS2", B38400) {
     init();

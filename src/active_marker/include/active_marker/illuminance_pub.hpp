@@ -8,8 +8,9 @@
 namespace active_marker {
 class IlluminancePubNode : public rclcpp::Node {
  public:
-  IlluminancePubNode()
-      : Node("illuminance_pub"),
+  template <class... Args>
+  IlluminancePubNode(Args... args)
+      : Node("illuminance_pub", "/am", args...),
         update_hz_(this->declare_parameter<int>("update_hz", 60)),
         udp_receiver_(50007, std::bind(&IlluminancePubNode::pub_illuminance,
                                        this, std::placeholders::_1)) {
