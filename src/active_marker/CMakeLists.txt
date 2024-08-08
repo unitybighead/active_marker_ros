@@ -42,12 +42,14 @@ ament_auto_add_executable(color_pub src/color_pub.cpp)
 ament_auto_add_executable(color_sub src/color_sub.cpp)
 ament_auto_add_executable(illuminance_pub src/illuminance_pub.cpp)
 ament_auto_add_executable(illuminance_sub src/illuminance_sub.cpp)
+ament_auto_add_executable(robot_ID src/robot_ID.cpp)
 
 # Link libraries
 target_link_libraries(color_pub ${PROJECT_NAME})
 target_link_libraries(color_sub ${PROJECT_NAME})
 target_link_libraries(illuminance_pub ${PROJECT_NAME} active_marker_lib)
 target_link_libraries(illuminance_sub ${PROJECT_NAME} active_marker_lib)
+target_link_libraries(robot_ID ${PROJECT_NAME})
 
 # Install headers
 install(
