@@ -5,23 +5,25 @@ if [ "$(whoami)" = "root" ]; then
   exit 255
 fi
 
-# Writing automatic startup and registering the service
-echo \
-"[Unit]
-Description=\"active_marker_startup\"
-After = systemd-networkd-wait-online.service
+# check OS version
+source /etc/lsb-release
 
-[Service]
-Type=simple
-ExecStart=\"$(pwd)/startup.bash\"
-Restart=always
-Environment=\"HOME=root\"
+# set ROS_DISTRO
+if [ "$DISTRIB_RELEASE" == "18.04" ]
+then
+  ROS_DISTRO="dashing"
+elif [ "$DISTRIB_RELEASE" == "20.04" ]
+then
+  ROS_DISTRO="foxy"
+elif [ "$DISTRIB_RELEASE" == "22.04" ]
+then
+  ROS_DISTRO="humble"
+else
+  echo "Unsaported Ubuntu version"
+  exit 255
+fi
 
-[Install]
-WantedBy=multi-user.target" \
-| sudo tee "/lib/systemd/system/active_marker.service" > /dev/null && \
-chmod 744 "$(pwd)/startup.bash" && \
-sudo systemctl enable active_marker
+echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
 # install apt that needed by packages
 rosdep update
@@ -36,5 +38,24 @@ sudo systemctl stop nvgetty
 sudo systemctl disable nvgetty
 sudo chmod 666 /dev/ttyTHS1
 sudo chmod 666 /dev/ttyTHS2
+
+# Write automatic startup and registering the service
+echo "[Unit]
+Description=active_marker_startup
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'source /opt/ros/${ROS_DISTRO}/setup.bash && $(pwd)/startup.bash'
+Restart=always
+Environment=HOME=/root
+
+[Install]
+WantedBy=multi-user.target" | sudo tee /etc/systemd/system/active_marker.service
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable active_marker.service
+sudo systemctl start active_marker.service
 
 echo "Please reboot"

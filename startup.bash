@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 . install/setup.bash
 . config.txt
 # if [ $ROBOT_ID -ge 10 ]; then
