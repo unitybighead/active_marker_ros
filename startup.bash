@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
 . install/setup.bash
 . config.txt
 # if [ $ROBOT_ID -ge 10 ]; then
@@ -10,9 +9,12 @@ cd "$(dirname "$0")"
 # fi
 # export ROS_LOCALHOST_ONLY=1
 
-ros2 run active_marker illuminance_pub __params:=config.yaml __ns:=/am"$ROBOT_ID" &
-ros2 run active_marker illuminance_sub __params:=config.yaml __ns:=/am"$ROBOT_ID" &
-ros2 run active_marker color_sub __params:=config.yaml __ns:=/am"$ROBOT_ID" &
+echo $ROBOT_ID 
+echo $TEAM_COLOR
+
+ros2 run active_marker illuminance_pub __ns:=/am"$ROBOT_ID" &
+ros2 run active_marker illuminance_sub __ns:=/am"$ROBOT_ID" &
+ros2 run active_marker color_sub __ns:=/am"$ROBOT_ID" &
 ros2 run active_marker robot_ID $ROBOT_ID $TEAM_COLOR &
 
 wait
