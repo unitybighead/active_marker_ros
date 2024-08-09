@@ -34,7 +34,7 @@ void ColorSubNode::init() {
 }
 
 void ColorSubNode::color_init() {
-  pink_ = {231, 84, 128, 0};
+  pink_ = {255, 0, 50, 0};
   green_ = {0, 255, 0, 0};
   blue_ = {0, 0, 255, 0};
   yellow_ = {255, 255, 0, 0};
