@@ -30,10 +30,14 @@ void ColorSubNode::init() {
   timer_ = this->create_wall_timer(1000ms / update_hz_,
                                    std::bind(&ColorSubNode::update, this));
   no_recv_count_ = 0;
-  pink_.a = 0;
-  green_.a = 0;
-  blue_.a = 0;
-  yellow_.a = 0;
+  color_init();
+}
+
+void ColorSubNode::color_init() {
+  pink_ = {231, 84, 128, 0};
+  green_ = {0, 255, 0, 0};
+  blue_ = {0, 0, 255, 0};
+  yellow_ = {255, 255, 0, 0};
 }
 
 void ColorSubNode::set_blue(ColorMsg::SharedPtr color_msg) {

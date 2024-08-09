@@ -11,7 +11,7 @@ class ColorSubNode : public rclcpp::Node {
   template <class... Args>
   ColorSubNode(Args... args)
       : Node("color_sub", "/am", args...),
-        update_hz_(this->declare_parameter<int>("update_hz", 500)),
+        update_hz_(this->declare_parameter<int>("update_hz", 10)),
         uart_("/dev/ttyTHS2", B38400) {
     init();
   }
@@ -39,6 +39,7 @@ class ColorSubNode : public rclcpp::Node {
   std::size_t no_recv_count_;
 
   void init();
+  void color_init();
   void set_pink(ColorMsg::SharedPtr color_msg);
   void set_green(ColorMsg::SharedPtr color_msg);
   void set_blue(ColorMsg::SharedPtr color_msg);
