@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 #include "../active_marker_lib/include/uart.hpp"
 #include "../include/active_marker/uart_proto.hpp"
+
 int main(int argc, char* argv[]) {
   // argv[1]: ID, argv[2]: Team color
   if (argc < 3) {
@@ -30,6 +32,9 @@ int main(int argc, char* argv[]) {
   }
 
   lib::Uart uart("/dev/ttyTHS2", B38400);
-  uart.transmit(data, sizeof(data));
+  while(1){
+    uart.transmit(data, sizeof(data));
+    sleep(3);
+  }
   return 0;
 }
