@@ -12,10 +12,8 @@ find_package(std_msgs REQUIRED)
 ament_auto_find_build_dependencies()
 
 # Add active_marker_lib
-ament_auto_add_library(active_marker_lib STATIC
-  active_marker_lib/src/udp.cpp
-  active_marker_lib/src/uart.cpp
-)
+file(GLOB LIB_SOURCES "active_marker_lib/src/*.cpp")
+ament_auto_add_library(active_marker_lib STATIC ${LIB_SOURCES})
 
 target_include_directories(active_marker_lib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/active_marker_lib/include>
@@ -25,31 +23,28 @@ target_include_directories(active_marker_lib PUBLIC
 target_compile_options(active_marker_lib PRIVATE -fPIC)
 
 # Add main library
-ament_auto_add_library(${PROJECT_NAME} SHARED
-  src/active_marker/color_pub.cpp
-  src/active_marker/color_sub.cpp
-  src/active_marker/illuminance_pub.cpp
-  src/active_marker/illuminance_sub.cpp
-)
+file(GLOB MAIN_LIB_SOURCES "src/active_marker/*.cpp")
+ament_auto_add_library(${PROJECT_NAME} SHARED ${MAIN_LIB_SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
 
-# Add executables
-ament_auto_add_executable(color_pub src/color_pub.cpp)
-ament_auto_add_executable(color_sub src/color_sub.cpp)
-ament_auto_add_executable(illuminance_pub src/illuminance_pub.cpp)
-ament_auto_add_executable(illuminance_sub src/illuminance_sub.cpp)
-ament_auto_add_executable(robot_ID src/robot_ID.cpp)
+# Find executables automatically
+file(GLOB EXECUTABLE_SOURCES "src/*.cpp")
 
-# Link libraries
-target_link_libraries(color_pub ${PROJECT_NAME})
-target_link_libraries(color_sub ${PROJECT_NAME})
-target_link_libraries(illuminance_pub ${PROJECT_NAME} active_marker_lib)
-target_link_libraries(illuminance_sub ${PROJECT_NAME} active_marker_lib)
-target_link_libraries(robot_ID ${PROJECT_NAME})
+foreach(EXECUTABLE_SOURCE ${EXECUTABLE_SOURCES})
+  # Get the filename without the extension (e.g., color_pub)
+  get_filename_component(EXECUTABLE_NAME ${EXECUTABLE_SOURCE} NAME_WE)
+  
+  ament_auto_add_executable(${EXECUTABLE_NAME} ${EXECUTABLE_SOURCE})
+  target_link_libraries(${EXECUTABLE_NAME} ${PROJECT_NAME})
+endforeach()
+
+# Link active_marker_lib to specific executables
+target_link_libraries(illuminance_pub active_marker_lib)
+target_link_libraries(illuminance_sub active_marker_lib)
 
 # Install headers
 install(
