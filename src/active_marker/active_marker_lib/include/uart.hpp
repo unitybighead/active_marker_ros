@@ -3,13 +3,13 @@
 
 #include <fcntl.h>
 #include <malloc.h>
+#include <sys/file.h>
 #include <termios.h>
 #include <unistd.h>
 
 #include <algorithm>
 #include <cstring>
 #include <iostream>
-
 namespace lib {
 
 class Uart {
@@ -36,6 +36,7 @@ class Uart {
   int uart_filestream_;
   int baud_rate_;
   bool is_open_;
+  const char* kuart_lock_file_ = "/tmp/uart_lock";
 };
 }  // namespace lib
 

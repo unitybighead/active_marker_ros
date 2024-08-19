@@ -20,15 +20,18 @@ void Uart::setOption() {
 }
 
 void Uart::transmit(const uint8_t* data, const int size) {
-  if (uart_filestream_ != -1) {
-    uint8_t* data_buf = (uint8_t*)calloc(size + 1, sizeof(uint8_t));
-    std::memcpy(data_buf, data, sizeof(uint8_t));
-    data_buf[size] = '\0';
-    int count = write(uart_filestream_, data, sizeof(data_buf));
+  // set mutex file
+  int fd = open(kuart_lock_file_, O_CREAT | O_RDWR, 0666);
+
+  // transmit
+  if (uart_filestream_ != -1 && flock(fd, LOCK_EX) == 0) {
+    int count = write(uart_filestream_, data, sizeof(data));
     if (count < 0) {
       std::cerr << "UART TX Error" << std::endl;
     }
   }
+  flock(fd, LOCK_UN);
+  close(fd);
 }
 
 void Uart::receive(uint8_t* received_data) {
@@ -40,9 +43,7 @@ void Uart::receive(uint8_t* received_data) {
     } else if (rx_rength == 0) {
       std::cout << "No data received" << std::endl;
     } else {
-      rx_buffer[rx_rength] = '\0';
       std::copy(rx_buffer, rx_buffer + rx_rength, received_data);
-      std::cout << "Recived" << rx_buffer << std::endl;
     }
   }
 }
