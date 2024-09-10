@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
   data[0] = static_cast<uint8_t>(active_marker::UartCommand::ID);
 
   uint8_t ID_arg = std::atoi(argv[1]);
-  if (ID_arg >= 0 && ID_arg <= 15) {
+  if (ID_arg >= 0 && ID_arg <= 16) {
     data[1] = ID_arg;
   } else {
     std::cerr << "Invalid ID argument." << std::endl;
