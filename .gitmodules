@@ -1,0 +1,3 @@
+[submodule "msg"]
+	path = msg
+	url = https://github.com/unitybighead/active_marker_msg.git
