@@ -3,6 +3,7 @@
 
 #include "../../active_marker_lib/include/uart.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/bool.hpp"
 #include "std_msgs/msg/color_rgba.hpp"
 
 namespace active_marker {
@@ -25,16 +26,19 @@ class ColorSubNode : public rclcpp::Node {
 
  private:
   using ColorMsg = std_msgs::msg::ColorRGBA;
+  using BoolMsg = std_msgs::msg::Bool;
 
   const std::size_t update_hz_;
   rclcpp::Subscription<ColorMsg>::SharedPtr p_subscription_;
   rclcpp::Subscription<ColorMsg>::SharedPtr g_subscription_;
   rclcpp::Subscription<ColorMsg>::SharedPtr b_subscription_;
   rclcpp::Subscription<ColorMsg>::SharedPtr y_subscription_;
+  rclcpp::Subscription<BoolMsg>::SharedPtr color_is_setting_subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
   lib::Uart uart_;
 
   RGBA pink_, green_, blue_, yellow_;
+  bool color_is_setting_ = false;
 
   std::size_t no_recv_count_;
 
@@ -44,6 +48,7 @@ class ColorSubNode : public rclcpp::Node {
   void set_green(ColorMsg::SharedPtr color_msg);
   void set_blue(ColorMsg::SharedPtr color_msg);
   void set_yellow(ColorMsg::SharedPtr color_msg);
+  void set_color_is_setting(BoolMsg::SharedPtr bool_msg);
   void update();
 };
 }  // namespace active_marker

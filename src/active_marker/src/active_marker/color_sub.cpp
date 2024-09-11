@@ -27,6 +27,10 @@ void ColorSubNode::init() {
   y_subscription_ = this->create_subscription<ColorMsg>(
       "yellow", qos,
       std::bind(&ColorSubNode::set_yellow, this, std::placeholders::_1));
+  color_is_setting_subscription_ = this->create_subscription<BoolMsg>(
+      "color_is_setting", qos,
+      std::bind(&ColorSubNode::set_color_is_setting, this,
+                std::placeholders::_1));
   timer_ = this->create_wall_timer(1000ms / update_hz_,
                                    std::bind(&ColorSubNode::update, this));
   no_recv_count_ = 0;
@@ -34,10 +38,33 @@ void ColorSubNode::init() {
 }
 
 void ColorSubNode::color_init() {
-  pink_ = {255, 0, 50, 0};
-  green_ = {0, 255, 0, 0};
-  blue_ = {0, 0, 255, 0};
-  yellow_ = {255, 255, 0, 0};
+  if (!(this->get_parameter("pink_.r", pink_.r) &&
+        this->get_parameter("pink_.g", pink_.g) &&
+        this->get_parameter("pink_.b", pink_.b) &&
+        this->get_parameter("pink_.a", pink_.a))) {
+    pink_ = {255, 0, 50, 0};
+  }
+
+  if (!(this->get_parameter("green_.r", green_.r) &&
+        this->get_parameter("green_.g", green_.g) &&
+        this->get_parameter("green_.b", green_.b) &&
+        this->get_parameter("green_.a", green_.a))) {
+    green_ = {0, 255, 0, 0};
+  }
+
+  if (!(this->get_parameter("blue_.r", blue_.r) &&
+        this->get_parameter("blue_.g", blue_.g) &&
+        this->get_parameter("blue_.b", blue_.b) &&
+        this->get_parameter("blue_.a", blue_.a))) {
+    blue_ = {0, 0, 255, 0};
+  }
+
+  if (!(this->get_parameter("yellow_.r", yellow_.r) &&
+        this->get_parameter("yellow_.g", yellow_.g) &&
+        this->get_parameter("yellow_.b", yellow_.b) &&
+        this->get_parameter("yellow_.a", yellow_.a))) {
+    yellow_ = {255, 255, 0, 0};
+  }
 }
 
 void ColorSubNode::set_blue(ColorMsg::SharedPtr color_msg) {
@@ -68,31 +95,42 @@ void ColorSubNode::set_green(ColorMsg::SharedPtr color_msg) {
   no_recv_count_ = 0;
 }
 
+void ColorSubNode::set_color_is_setting(BoolMsg::SharedPtr bool_msg) {
+  color_is_setting_ = bool_msg->data;
+  no_recv_count_ = 0;
+}
+
 void ColorSubNode::update() {
   no_recv_count_++;
-  RCLCPP_INFO(this->get_logger(), "Pink: %d %d %d", pink_.r, pink_.g, pink_.b);
-  RCLCPP_INFO(this->get_logger(), "Green: %d %d %d", green_.r, green_.g,
-              green_.b);
-  RCLCPP_INFO(this->get_logger(), "Blue: %d %d %d", blue_.r, blue_.g, blue_.b);
-  RCLCPP_INFO(this->get_logger(), "Yellow: %d %d %d", yellow_.r, yellow_.g,
-              yellow_.b);
-  uint8_t b_data[] = {
-      static_cast<uint8_t>(UartCommand::BLUE), static_cast<uint8_t>(blue_.r),
-      static_cast<uint8_t>(blue_.g), static_cast<uint8_t>(blue_.b)};
-  uart_.transmit(b_data, sizeof(b_data));
-  uint8_t y_data[] = {static_cast<uint8_t>(UartCommand::YELLLOW),
-                      static_cast<uint8_t>(yellow_.r),
-                      static_cast<uint8_t>(yellow_.g),
-                      static_cast<uint8_t>(yellow_.b)};
-  uart_.transmit(y_data, sizeof(y_data));
-  uint8_t p_data[] = {
-      static_cast<uint8_t>(UartCommand::PINK), static_cast<uint8_t>(pink_.r),
-      static_cast<uint8_t>(pink_.g), static_cast<uint8_t>(pink_.b)};
-  uart_.transmit(p_data, sizeof(p_data));
-  uint8_t g_data[] = {
-      static_cast<uint8_t>(UartCommand::GREEN), static_cast<uint8_t>(green_.r),
-      static_cast<uint8_t>(green_.g), static_cast<uint8_t>(green_.b)};
-  uart_.transmit(g_data, sizeof(g_data));
+  if (!color_is_setting_) {
+    RCLCPP_INFO(this->get_logger(), "Pink: %d %d %d", pink_.r, pink_.g,
+                pink_.b);
+    RCLCPP_INFO(this->get_logger(), "Green: %d %d %d", green_.r, green_.g,
+                green_.b);
+    RCLCPP_INFO(this->get_logger(), "Blue: %d %d %d", blue_.r, blue_.g,
+                blue_.b);
+    RCLCPP_INFO(this->get_logger(), "Yellow: %d %d %d", yellow_.r, yellow_.g,
+                yellow_.b);
+    uint8_t b_data[] = {
+        static_cast<uint8_t>(UartCommand::BLUE), static_cast<uint8_t>(blue_.r),
+        static_cast<uint8_t>(blue_.g), static_cast<uint8_t>(blue_.b)};
+    uint8_t y_data[] = {static_cast<uint8_t>(UartCommand::YELLLOW),
+                        static_cast<uint8_t>(yellow_.r),
+                        static_cast<uint8_t>(yellow_.g),
+                        static_cast<uint8_t>(yellow_.b)};
+    uint8_t p_data[] = {
+        static_cast<uint8_t>(UartCommand::PINK), static_cast<uint8_t>(pink_.r),
+        static_cast<uint8_t>(pink_.g), static_cast<uint8_t>(pink_.b)};
+    uint8_t g_data[] = {static_cast<uint8_t>(UartCommand::GREEN),
+                        static_cast<uint8_t>(green_.r),
+                        static_cast<uint8_t>(green_.g),
+                        static_cast<uint8_t>(green_.b)};
+
+    uart_.transmit(b_data, sizeof(b_data));
+    uart_.transmit(y_data, sizeof(y_data));
+    uart_.transmit(p_data, sizeof(p_data));
+    uart_.transmit(g_data, sizeof(g_data));
+  }
 }
 
 }  // namespace active_marker
