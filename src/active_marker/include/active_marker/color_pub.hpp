@@ -1,8 +1,8 @@
 #ifndef COLOR_PUB_HPP_
 #define COLOR_PUB_HPP_
 
+#include "active_marker_msgs/msg/rgb.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/color_rgba.hpp"
 
 namespace active_marker {
 
@@ -15,7 +15,7 @@ class ColorPubNode : public rclcpp::Node {
   }
 
  private:
-  using ColorMsg = std_msgs::msg::ColorRGBA;
+  using ColorMsg = active_marker_msgs::msg::RGB;
 
   const std::size_t update_hz_;
   rclcpp::Publisher<ColorMsg>::SharedPtr p_publisher_;

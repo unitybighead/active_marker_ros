@@ -40,30 +40,26 @@ void ColorSubNode::init() {
 void ColorSubNode::color_init() {
   if (!(this->get_parameter("pink_.r", pink_.r) &&
         this->get_parameter("pink_.g", pink_.g) &&
-        this->get_parameter("pink_.b", pink_.b) &&
-        this->get_parameter("pink_.a", pink_.a))) {
-    pink_ = {255, 0, 50, 0};
+        this->get_parameter("pink_.b", pink_.b))) {
+    pink_ = {255, 0, 50};
   }
 
   if (!(this->get_parameter("green_.r", green_.r) &&
         this->get_parameter("green_.g", green_.g) &&
-        this->get_parameter("green_.b", green_.b) &&
-        this->get_parameter("green_.a", green_.a))) {
-    green_ = {0, 255, 0, 0};
+        this->get_parameter("green_.b", green_.b))) {
+    green_ = {0, 255, 0};
   }
 
   if (!(this->get_parameter("blue_.r", blue_.r) &&
         this->get_parameter("blue_.g", blue_.g) &&
-        this->get_parameter("blue_.b", blue_.b) &&
-        this->get_parameter("blue_.a", blue_.a))) {
-    blue_ = {0, 0, 255, 0};
+        this->get_parameter("blue_.b", blue_.b))) {
+    blue_ = {0, 0, 255};
   }
 
   if (!(this->get_parameter("yellow_.r", yellow_.r) &&
         this->get_parameter("yellow_.g", yellow_.g) &&
-        this->get_parameter("yellow_.b", yellow_.b) &&
-        this->get_parameter("yellow_.a", yellow_.a))) {
-    yellow_ = {255, 255, 0, 0};
+        this->get_parameter("yellow_.b", yellow_.b))) {
+    yellow_ = {255, 255, 0};
   }
 }
 

@@ -2,9 +2,9 @@
 #define COLOR_SUB_HPP_
 
 #include "../../active_marker_lib/include/uart.hpp"
+#include "active_marker_msgs/msg/rgb.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
-#include "std_msgs/msg/color_rgba.hpp"
 
 namespace active_marker {
 class ColorSubNode : public rclcpp::Node {
@@ -21,11 +21,10 @@ class ColorSubNode : public rclcpp::Node {
     std::uint8_t r;
     std::uint8_t g;
     std::uint8_t b;
-    std::uint8_t a;
-  } RGBA;
+  } RGB;
 
  private:
-  using ColorMsg = std_msgs::msg::ColorRGBA;
+  using ColorMsg = active_marker_msgs::msg::RGB;
   using BoolMsg = std_msgs::msg::Bool;
 
   const std::size_t update_hz_;
@@ -37,7 +36,7 @@ class ColorSubNode : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
   lib::Uart uart_;
 
-  RGBA pink_, green_, blue_, yellow_;
+  RGB pink_, green_, blue_, yellow_;
   bool color_is_setting_ = false;
 
   std::size_t no_recv_count_;
