@@ -1,9 +1,9 @@
 #include "../include/uart.hpp"
 
 #include <fcntl.h>
-#include <malloc.h>
-#include <unistd.h>
 #include <sys/file.h>
+#include <unistd.h>
+
 #include <algorithm>
 #include <cstring>
 #include <iostream>
