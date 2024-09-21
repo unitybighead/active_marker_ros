@@ -10,7 +10,7 @@ void Uart::setOption() {
   cfsetospeed(&options, baud_rate_);
 
   // set data_bit stop_bit parity
-  options.c_cflag = baud_rate_ | CS8 | CLOCAL | CREAD;
+  options.c_cflag = baud_rate_ | CS8 | CLOCAL | CREAD | PARENB | PARODD;
   options.c_iflag = IGNPAR;
   options.c_oflag = 0;
   options.c_lflag = 0;
