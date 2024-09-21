@@ -12,8 +12,8 @@ class ColorSubNode : public rclcpp::Node {
   template <class... Args>
   ColorSubNode(Args... args)
       : Node("color_sub", "/am", args...),
-        update_hz_(this->declare_parameter<int>("update_hz", 10)),
-        uart_("/dev/ttyTHS2", B38400) {
+        update_hz_(this->declare_parameter<int>("update_hz", 60)),
+        uart_("/dev/ttyTHS2", B115200) {
     init();
   }
 

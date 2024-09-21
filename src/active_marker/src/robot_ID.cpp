@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  lib::Uart uart("/dev/ttyTHS2", B38400);
+  lib::Uart uart("/dev/ttyTHS2", B115200);
   while(1){
     uart.transmit(data, sizeof(data));
     sleep(3);
