@@ -12,7 +12,7 @@ using namespace std::chrono_literals;
 namespace active_marker {
 
 void ColorPubNode::init() {
-  const auto qos = rclcpp::QoS(1).best_effort();
+  const auto qos = rclcpp::QoS(1).reliable();
   p_publisher_ = this->create_publisher<ColorMsg>("pink", qos);
   g_publisher_ = this->create_publisher<ColorMsg>("green", qos);
   b_publisher_ = this->create_publisher<ColorMsg>("blue", qos);

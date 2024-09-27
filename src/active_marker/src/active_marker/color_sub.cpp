@@ -14,7 +14,7 @@ using namespace std::chrono_literals;
 namespace active_marker {
 
 void ColorSubNode::init() {
-  const auto qos = rclcpp::QoS(1).best_effort();
+  const auto qos = rclcpp::QoS(1).reliable();
   p_subscription_ = this->create_subscription<ColorMsg>(
       "pink", qos,
       std::bind(&ColorSubNode::set_pink, this, std::placeholders::_1));
@@ -98,7 +98,6 @@ void ColorSubNode::set_color_is_setting(BoolMsg::SharedPtr bool_msg) {
 
 void ColorSubNode::update() {
   no_recv_count_++;
-  if (!color_is_setting_) {
     RCLCPP_INFO(this->get_logger(), "Pink: %d %d %d", pink_.r, pink_.g,
                 pink_.b);
     RCLCPP_INFO(this->get_logger(), "Green: %d %d %d", green_.r, green_.g,
@@ -126,7 +125,6 @@ void ColorSubNode::update() {
     uart_.transmit(y_data, sizeof(y_data));
     uart_.transmit(p_data, sizeof(p_data));
     uart_.transmit(g_data, sizeof(g_data));
-  }
 }
 
 }  // namespace active_marker
