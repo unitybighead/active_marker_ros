@@ -1,6 +1,7 @@
 #ifndef ILLUMINANCE_PUB_HPP_
 #define ILLUMINANCE_PUB_HPP_
 
+#include "../active_marker_lib/include/uart.hpp"
 #include "../active_marker_lib/include/udp.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/u_int16.hpp"
@@ -12,6 +13,7 @@ class IlluminancePubNode : public rclcpp::Node {
   IlluminancePubNode(Args... args)
       : Node("illuminance_pub", "/am", args...),
         update_hz_(this->declare_parameter<int>("update_hz", 60)),
+        uart_("/dev/ttyTHS2", B115200),
         udp_receiver_(50007, std::bind(&IlluminancePubNode::pub_illuminance,
                                        this, std::placeholders::_1)) {
     init();
@@ -26,9 +28,11 @@ class IlluminancePubNode : public rclcpp::Node {
 
   uint16_t illuminance_;
   lib::UdpReceiver udp_receiver_;
+  lib::Uart uart_;
 
   void init();
   void pub_illuminance(uint16_t illuminance_value);
+  uint16_t serialize_uint16(uint8_t* data);
   void update();
 };
 }  // namespace active_marker

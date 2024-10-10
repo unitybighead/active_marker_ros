@@ -13,10 +13,10 @@ class Uart {
 
   void transmit(const uint8_t* data, const int size);
   void receive(uint8_t* received_data, const int buffer_size);
+  bool is_open();
 
  private:
   void setOption();
-  bool is_open();
 
   const char* port_;
   int uart_filestream_;
