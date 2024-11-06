@@ -5,7 +5,6 @@
 #include <memory>
 #include <string>
 
-#include "../../active_marker_lib/include/uart.hpp"
 #include "active_marker/uart_proto.hpp"
 #include "rclcpp/rclcpp.hpp"
 
@@ -35,8 +34,6 @@ void ColorSubNode::init() {
                                    std::bind(&ColorSubNode::update, this));
   no_recv_count_ = 0;
   color_init();
-
-  uart_.start_receive();
 }
 
 void ColorSubNode::color_init() {
@@ -146,15 +143,11 @@ void ColorSubNode::update() {
       p_data, p_data + sizeof(p_data) / sizeof(p_data[0]));
   std::vector<std::uint8_t> g_trans(
       g_data, g_data + sizeof(g_data) / sizeof(g_data[0]));
-  uart_.start_transmit(b_trans);
-  uart_.start_transmit(y_trans);
-  uart_.start_transmit(p_trans);
-  uart_.start_transmit(g_trans);
 
-  // uart_.transmit(b_data, sizeof(b_data));
-  // uart_.transmit(y_data, sizeof(y_data));
-  // uart_.transmit(p_data, sizeof(p_data));
-  // uart_.transmit(g_data, sizeof(g_data));
+  uart_.transmit(b_data, sizeof(b_data));
+  uart_.transmit(y_data, sizeof(y_data));
+  uart_.transmit(p_data, sizeof(p_data));
+  uart_.transmit(g_data, sizeof(g_data));
 }
 
 }  // namespace active_marker

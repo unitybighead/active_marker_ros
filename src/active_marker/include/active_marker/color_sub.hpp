@@ -2,7 +2,6 @@
 #define COLOR_SUB_HPP_
 
 #include "../../active_marker_lib/include/uart.hpp"
-#include "../../active_marker_lib/include/uart_asio.hpp"
 #include "active_marker_msgs/msg/rgb.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/bool.hpp"
@@ -14,8 +13,7 @@ class ColorSubNode : public rclcpp::Node {
   ColorSubNode(Args... args)
       : Node("color_sub", "/am", args...),
         update_hz_(this->declare_parameter<int>("update_hz", 60)),
-        // uart_("/dev/ttyTHS2", B115200) {
-        uart_(io, "/dev/ttyTHS2", 115200) {
+        uart_("/dev/ttyTHS2", B115200) {
     init();
   }
 
@@ -36,9 +34,7 @@ class ColorSubNode : public rclcpp::Node {
   rclcpp::Subscription<ColorMsg>::SharedPtr y_subscription_;
   rclcpp::Subscription<BoolMsg>::SharedPtr color_is_setting_subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
-  // lib::Uart uart_;
-  lib::UartAsio uart_;
-  boost::asio::io_service io;
+  lib::Uart uart_;
 
   RGB pink_, green_, blue_, yellow_;
   bool color_is_setting_ = false;

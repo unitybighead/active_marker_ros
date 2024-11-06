@@ -11,7 +11,8 @@ UdpReceiver::UdpReceiver(int port, std::function<void(uint16_t)> callback)
     : callback_(callback), is_runnning_(false) {
   sockfd_ = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd_ < 0) {
-    throw std::runtime_error("Failed to create socket");
+    std::cerr << "Failed to create socket" << std::endl;
+    return;
   }
 
   sockaddr_in servaddr;
@@ -21,7 +22,8 @@ UdpReceiver::UdpReceiver(int port, std::function<void(uint16_t)> callback)
   servaddr.sin_port = htons(port);
 
   if (bind(sockfd_, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
-    throw std::runtime_error("Failed to bind socket");
+    std::cerr << "Failed to bind socket" << std::endl;
+    return;
   }
   start();
 }

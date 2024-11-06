@@ -32,6 +32,7 @@ void Uart::setOption() {
   // set data_bit stop_bit parity
   options.c_cflag = baud_rate_ | CS8 | CLOCAL | CREAD | PARENB | PARODD;
   options.c_iflag = IGNPAR;
+  options.c_cflag &= ~CRTSCTS;  // ignore hardware flow control
   options.c_oflag = 0;
   options.c_lflag = 0;
 
@@ -45,7 +46,7 @@ void Uart::transmit(const uint8_t* data, const int size) {
 
   // transmit
   if (uart_filestream_ != -1 && flock(fd, LOCK_EX) == 0) {
-    int count = write(uart_filestream_, data, sizeof(data));
+    int count = write(uart_filestream_, data, 8); // 8: size of data
     if (count < 0) {
       std::cerr << "UART TX Error" << std::endl;
     }
@@ -60,6 +61,7 @@ void Uart::receive(uint8_t* received_data, const int buffer_size) {
 
   if (fd == -1) {
     std::cerr << "Error opening lock file" << std::endl;
+    close(fd);
     return;
   }
 
@@ -70,17 +72,21 @@ void Uart::receive(uint8_t* received_data, const int buffer_size) {
   }
 
   if (uart_filestream_ != -1) {
-    unsigned char rx_buffer[256];
-    int rx_length = read(uart_filestream_, rx_buffer, sizeof(rx_buffer));
+    unsigned char rx_buffer[8];
+    int rx_length = read(uart_filestream_, rx_buffer, buffer_size);  // バッファサイズを指定
+
 
     if (rx_length < 0) {
       std::cerr << "UART RX Error: " << strerror(errno) << std::endl;
     } else if (rx_length == 0) {
-      std::cout << "No data received yet" << std::endl;
+      std::cerr << "No data received yet" << std::endl;
     } else {
-      std::cout << "Bytes received: " << rx_length << std::endl;
+      std::cerr << "Bytes received: " << rx_length << std::endl;
       std::copy(rx_buffer, rx_buffer + std::min(rx_length, (int)buffer_size),
                 received_data);
+      for(int i = 0; i < 8; i++){
+        std::cerr << received_data[i] << std::endl;
+      }
     }
   }
 

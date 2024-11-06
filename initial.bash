@@ -34,10 +34,11 @@ wget https://raw.githubusercontent.com/karaage0703/jetson-nano-tools/master/udev
 sudo mv 55-tegraserial.rules /etc/udev/rules.d/
 sudo usermod -a -G tty $(whoami)
 sudo usermod -a -G dialout $(whoami)
-sudo systemctl stop nvgetty
-sudo systemctl disable nvgetty
+sudo systemctl stop nvgetty.service
+sudo systemctl disable nvgetty.service
 sudo chmod 666 /dev/ttyTHS1
 sudo chmod 666 /dev/ttyTHS2
+sudo chmod 666 /tmp/uart_lock
 
 # Write automatic startup and registering the service
 echo "[Unit]

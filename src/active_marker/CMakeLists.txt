@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 project(active_marker)
 
+add_definitions(-DBOOST_SYSTEM_NO_DEPRECATED)
+add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
+
 # Find ament_cmake_auto first
 find_package(ament_cmake_auto REQUIRED)
 
