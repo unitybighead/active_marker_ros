@@ -29,23 +29,19 @@ void IlluminancePubNode::pub_illuminance(uint16_t illuminance_value) {
   illuminance_publisher_->publish(msg);
 }
 
-uint16_t IlluminancePubNode::serialize_uint16(uint8_t* data) {
-  return data[1] << 8 + data[0];
-}
-
 void IlluminancePubNode::update() {
   if (!uart_.is_open()) {
     RCLCPP_ERROR(this->get_logger(), "UART is not opening");
     return;
   }
-  uint8_t data[8];
+  uint8_t data[8] = {0};
   uart_.receive(data,sizeof(data));
   RCLCPP_INFO(this->get_logger()," command: %d %d %d",data[0],data[1],data[2]);
   if (data[0] != static_cast<uint8_t>(UartCommand::ILLUMINANCE)) {
     RCLCPP_ERROR(this->get_logger(), "not illuminance");
     return;
   }
-  uint16_t lux = serialize_uint16(&data[1]);
+  uint16_t lux = (data[2] << 8) + data[1];
   pub_illuminance(lux);
 }
 }  // namespace active_marker

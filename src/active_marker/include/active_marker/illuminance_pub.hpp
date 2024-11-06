@@ -32,7 +32,6 @@ class IlluminancePubNode : public rclcpp::Node {
 
   void init();
   void pub_illuminance(uint16_t illuminance_value);
-  uint16_t serialize_uint16(uint8_t* data);
   void update();
 };
 }  // namespace active_marker
