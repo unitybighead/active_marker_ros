@@ -18,7 +18,7 @@ class RobotIDNode : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
 
   lib::Uart uart_;
-  uint8_t ID_;
+  int ID_;
   std::string team_color_;
 
   void set_team_color(Int16Msg::SharedPtr);

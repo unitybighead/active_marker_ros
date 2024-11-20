@@ -38,6 +38,8 @@ void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
 }
 
 void RobotIDNode::update() {
+  RCLCPP_INFO(this->get_logger(), "%d", ID_);
+  RCLCPP_INFO(this->get_logger(), "%s", team_color_.c_str());
   uint8_t data[8] = {0};
   data[0] = static_cast<uint8_t>(UartCommand::ID);
   if (ID_ < 0 || ID_ > 16) {
