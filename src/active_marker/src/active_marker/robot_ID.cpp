@@ -18,18 +18,20 @@ RobotIDNode::RobotIDNode()
 }
 
 void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
-  char key = (char)msg->data;
-  switch (key) {
-    case 'b':
-    case 'B':
-      team_color_ = "blue";
-      break;
-    case 'y':
-    case 'Y':
-      team_color_ = "yellow";
-      break;
-    default:
-      break;
+  if (ID_ == 16) {  // debug only
+    char key = (char)msg->data;
+    switch (key) {
+      case 'b':
+      case 'B':
+        team_color_ = "blue";
+        break;
+      case 'y':
+      case 'Y':
+        team_color_ = "yellow";
+        break;
+      default:
+        break;
+    }
   }
 }
 
