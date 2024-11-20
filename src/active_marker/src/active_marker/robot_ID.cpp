@@ -10,6 +10,8 @@ RobotIDNode::RobotIDNode()
       ID_(this->declare_parameter<int>("ID", 10)),
       team_color_(this->declare_parameter<std::string>("team_color", "yellow")),
       uart_("/dev/tthTHS2", B115200) {
+  RCLCPP_INFO(this->get_logger(), "%d", ID_);
+  RCLCPP_INFO(this->get_logger(), "%s", team_color_.c_str());
   last_key_subsctiption_ = this->create_subscription<Int16Msg>(
       "last_key", rclcpp::QoS(1).reliable(),
       std::bind(&RobotIDNode::set_team_color, this, std::placeholders::_1));
