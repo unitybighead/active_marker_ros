@@ -15,6 +15,6 @@ echo $TEAM_COLOR
 ros2 run active_marker illuminance_pub  __ns:=/am"$ROBOT_ID" &
 ros2 run active_marker illuminance_sub __ns:=/am"$ROBOT_ID" &
 ros2 run active_marker color_sub __ns:=/am"$ROBOT_ID" &
-ros2 run active_marker robot_ID --ros-args -p ID:=$ROBOT_ID, team_color:=$TEAM_COLOR &
+ros2 run active_marker robot_ID __ns:=/am"$ROBOT_ID" --ros-args -p ID:="$ROBOT_ID", team_color:="$TEAM_COLOR" &
 
 wait
