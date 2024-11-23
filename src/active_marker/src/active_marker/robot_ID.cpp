@@ -16,9 +16,9 @@ RobotIDNode::RobotIDNode()
       "last_key", rclcpp::QoS(1).reliable(),
       std::bind(&RobotIDNode::set_team_color, this, std::placeholders::_1));
   timer_ =
-      this->create_wall_timer(10ms, std::bind(&RobotIDNode::update, this));
-      this->declare_parameter<int>("ID", 10);
-      this->declare_parameter<std::string>("team_color", "yellow");
+      this->create_wall_timer(1000ms, std::bind(&RobotIDNode::update, this));
+  this->declare_parameter<int>("ID", 10);
+  this->declare_parameter<std::string>("team_color", "yellow");
 }
 
 void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
