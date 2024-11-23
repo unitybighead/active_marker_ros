@@ -23,15 +23,14 @@ RobotIDNode::RobotIDNode()
 
 void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
   if (ID_ == 16) {  // debug only
-    char key = (char)msg->data;
-    switch (key) {
+    switch (msg->data) {
       case 'b':
       case 'B':
-        team_color_ = "blue";
+        this->set_parameters({rclcpp::Parameter("team_color", "blue")});
         break;
       case 'y':
       case 'Y':
-        team_color_ = "yellow";
+        this->set_parameters({rclcpp::Parameter("team_color", "yellow")});
         break;
       default:
         break;
@@ -42,8 +41,6 @@ void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
 void RobotIDNode::update() {
   this->get_parameter("ID", ID_);
   this->get_parameter("team_color", team_color_);
-  RCLCPP_INFO(this->get_logger(), "%d", ID_);
-  RCLCPP_INFO(this->get_logger(), "%s", team_color_.c_str());
   uint8_t data[8] = {0};
   data[0] = static_cast<uint8_t>(UartCommand::ID);
   if (ID_ < 0 || ID_ > 16) {
