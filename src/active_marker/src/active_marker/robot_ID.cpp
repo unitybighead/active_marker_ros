@@ -7,8 +7,8 @@ using namespace std::chrono_literals;
 namespace active_marker {
 RobotIDNode::RobotIDNode()
     : Node("robot_ID", "/am"),
-      ID_(this->declare_parameter<int>("ID", 10)),
-      team_color_(this->declare_parameter<std::string>("team_color", "yellow")),
+      ID_(10),
+      team_color_("yellow"),
       uart_("/dev/ttyTHS2", B115200) {
   RCLCPP_INFO(this->get_logger(), "%d", ID_);
   RCLCPP_INFO(this->get_logger(), "%s", team_color_.c_str());
@@ -16,7 +16,9 @@ RobotIDNode::RobotIDNode()
       "last_key", rclcpp::QoS(1).reliable(),
       std::bind(&RobotIDNode::set_team_color, this, std::placeholders::_1));
   timer_ =
-      this->create_wall_timer(3000ms, std::bind(&RobotIDNode::update, this));
+      this->create_wall_timer(10ms, std::bind(&RobotIDNode::update, this));
+      this->declare_parameter<int>("ID", 10);
+      this->declare_parameter<std::string>("team_color", "yellow");
 }
 
 void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
@@ -38,6 +40,8 @@ void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
 }
 
 void RobotIDNode::update() {
+  this->get_parameter("ID", ID_);
+  this->get_parameter("team_color", team_color_);
   RCLCPP_INFO(this->get_logger(), "%d", ID_);
   RCLCPP_INFO(this->get_logger(), "%s", team_color_.c_str());
   uint8_t data[8] = {0};
