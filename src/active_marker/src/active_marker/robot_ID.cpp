@@ -22,7 +22,8 @@ RobotIDNode::RobotIDNode()
 }
 
 void RobotIDNode::set_team_color(Int16Msg::SharedPtr msg) {
-  if (ID_ == 16) {  // debug only
+ // if (ID_ == 16) {  // debug only
+  if(1){
     switch (msg->data) {
       case 'b':
       case 'B':
